@@ -68,6 +68,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
     var oldZoomScale = Float(1.0)
     
     fileprivate var interceptOnlyAsyncAjaxRequestsPluginScript: PluginScript?
+    fileprivate var asyncAjaxRequestsRedirectToHostPluginScript: PluginScript?
     
     init(id: Any?, plugin: SwiftFlutterPlugin?, frame: CGRect, configuration: WKWebViewConfiguration,
          contextMenu: [String: Any]?, userScripts: [UserScript] = []) {
@@ -565,9 +566,13 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
         configuration.userContentController.addPluginScript(ORIGINAL_VIEWPORT_METATAG_CONTENT_JS_PLUGIN_SCRIPT)
         if let settings = settings {
             interceptOnlyAsyncAjaxRequestsPluginScript = createInterceptOnlyAsyncAjaxRequestsPluginScript(onlyAsync: settings.interceptOnlyAsyncAjaxRequests)
+            asyncAjaxRequestsRedirectToHostPluginScript = createAsyncAjaxRequestRedirectToHostPluginScript(redirect: settings.asyncAjaxRequestRedirectToHost)
             if settings.useShouldInterceptAjaxRequest {
                 if let interceptOnlyAsyncAjaxRequestsPluginScript = interceptOnlyAsyncAjaxRequestsPluginScript {
                     configuration.userContentController.addPluginScript(interceptOnlyAsyncAjaxRequestsPluginScript)
+                }
+                if let asyncAjaxRequestsRedirectToHostPluginScript = asyncAjaxRequestsRedirectToHostPluginScript {
+                    configuration.userContentController.addPluginScript(asyncAjaxRequestsRedirectToHostPluginScript)
                 }
                 configuration.userContentController.addPluginScript(INTERCEPT_AJAX_REQUEST_JS_PLUGIN_SCRIPT)
             }
@@ -1074,11 +1079,17 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
         }
         
         if newSettingsMap["interceptOnlyAsyncAjaxRequests"] != nil && settings?.interceptOnlyAsyncAjaxRequests != newSettings.interceptOnlyAsyncAjaxRequests {
-            if let applePayAPIEnabled = settings?.applePayAPIEnabled, !applePayAPIEnabled,
-               let interceptOnlyAsyncAjaxRequestsPluginScript = interceptOnlyAsyncAjaxRequestsPluginScript {
-                enablePluginScriptAtRuntime(flagVariable: FLAG_VARIABLE_FOR_INTERCEPT_ONLY_ASYNC_AJAX_REQUESTS_JS_SOURCE,
-                                            enable: newSettings.interceptOnlyAsyncAjaxRequests,
-                                            pluginScript: interceptOnlyAsyncAjaxRequestsPluginScript)
+            if let applePayAPIEnabled = settings?.applePayAPIEnabled, !applePayAPIEnabled {
+                if let interceptOnlyAsyncAjaxRequestsPluginScript = interceptOnlyAsyncAjaxRequestsPluginScript {
+                     enablePluginScriptAtRuntime(flagVariable: FLAG_VARIABLE_FOR_INTERCEPT_ONLY_ASYNC_AJAX_REQUESTS_JS_SOURCE,
+                                                 enable: newSettings.interceptOnlyAsyncAjaxRequests,
+                                                 pluginScript: interceptOnlyAsyncAjaxRequestsPluginScript)
+                 }
+                if let asyncAjaxRequestsRedirectToHostPluginScript = asyncAjaxRequestsRedirectToHostPluginScript {
+                         enablePluginScriptAtRuntime(flagVariable: FLAG_VARIABLE_FOR_ASYNC_AJAX_REQUESTS_REDIRECT_TO_HOST_JS_SOURCE,
+                                                     enable: newSettings.asyncAjaxRequestRedirectToHost,
+                                                     pluginScript: asyncAjaxRequestsRedirectToHostPluginScript)
+                }
             }
         }
         
@@ -3278,6 +3289,7 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
         }
         webMessageListeners.removeAll()
         interceptOnlyAsyncAjaxRequestsPluginScript = nil
+        asyncAjaxRequestsRedirectToHostPluginScript = nil
         if windowId == nil {
             configuration.userContentController.removeAllPluginScriptMessageHandlers()
             configuration.userContentController.removeScriptMessageHandler(forName: "onCallAsyncJavaScriptResultBelowIOS14Received")

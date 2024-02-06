@@ -2,16 +2,14 @@ import 'dart:collection';
 import 'dart:typed_data';
 import 'dart:ui';
 
-import '../find_interaction/platform_find_interaction_controller.dart';
-import '../pull_to_refresh/platform_pull_to_refresh_controller.dart';
-
 import '../context_menu/context_menu.dart';
+import '../find_interaction/platform_find_interaction_controller.dart';
+import '../print_job/main.dart';
+import '../pull_to_refresh/platform_pull_to_refresh_controller.dart';
 import '../types/main.dart';
-
 import '../web_uri.dart';
 import 'in_app_webview_settings.dart';
 import 'platform_inappwebview_controller.dart';
-import '../print_job/main.dart';
 
 ///{@template flutter_inappwebview_platform_interface.PlatformWebViewCreationParams}
 ///Class that represents a WebView. Used by [InAppWebView], [HeadlessInAppWebView] and the WebView of [PlatformInAppBrowser].
@@ -466,6 +464,9 @@ class PlatformWebViewCreationParams<T> {
   ///{@endtemplate}
   final Future<AjaxRequestAction?> Function(
       T controller, AjaxRequest ajaxRequest)? onAjaxProgress;
+
+  final Future<AjaxRequest?> Function(T controller, AjaxRequest ajaxRequest)?
+      onAsyncAjaxRedirect;
 
   ///{@template flutter_inappwebview_platform_interface.PlatformWebViewCreationParams.shouldInterceptFetchRequest}
   ///Event fired when a request is sent to a server through [Fetch API](https://developer.mozilla.org/it/docs/Web/API/Fetch_API).
@@ -1183,6 +1184,7 @@ class PlatformWebViewCreationParams<T> {
       this.shouldInterceptAjaxRequest,
       this.onAjaxReadyStateChange,
       this.onAjaxProgress,
+      this.onAsyncAjaxRedirect,
       this.shouldInterceptFetchRequest,
       this.onUpdateVisitedHistory,
       @Deprecated("Use onPrintRequest instead") this.onPrint,

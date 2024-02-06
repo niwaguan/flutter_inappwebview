@@ -1,29 +1,24 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_inappwebview_platform_interface/src/types/disposable.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import '../context_menu/context_menu.dart';
+import '../debug_logging_settings.dart';
 import '../find_interaction/platform_find_interaction_controller.dart';
-import '../inappwebview_platform.dart';
-import '../pull_to_refresh/main.dart';
-import '../types/main.dart';
-
-import '../in_app_webview/platform_inappwebview_controller.dart';
 import '../in_app_webview/in_app_webview_settings.dart';
-
+import '../in_app_webview/platform_inappwebview_controller.dart';
+import '../inappwebview_platform.dart';
 import '../print_job/main.dart';
+import '../pull_to_refresh/main.dart';
+import '../pull_to_refresh/platform_pull_to_refresh_controller.dart';
+import '../types/main.dart';
 import '../web_uri.dart';
 import '../webview_environment/platform_webview_environment.dart';
 import 'in_app_browser_menu_item.dart';
 import 'in_app_browser_settings.dart';
-import '../debug_logging_settings.dart';
-import '../pull_to_refresh/platform_pull_to_refresh_controller.dart';
 
 /// Object specifying creation parameters for creating a [PlatformInAppBrowser].
 ///
@@ -899,6 +894,10 @@ abstract class PlatformInAppBrowserEvents {
   ///- iOS
   ///- MacOS
   Future<AjaxRequestAction?>? onAjaxProgress(AjaxRequest ajaxRequest) {
+    return null;
+  }
+
+  Future<AjaxRequest>? onAsyncAjaxRedirect(AjaxRequest ajaxRequest) {
     return null;
   }
 

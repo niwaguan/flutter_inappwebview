@@ -1,24 +1,19 @@
-import 'dart:io';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:developer' as developer;
-import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview_platform_interface/flutter_inappwebview_platform_interface.dart';
 
-import '../web_message/main.dart';
-
 import '../in_app_browser/in_app_browser.dart';
-import '../web_storage/web_storage.dart';
-
-import 'headless_in_app_webview.dart';
-import '_static_channel.dart';
-
 import '../print_job/main.dart';
+import '../web_message/main.dart';
+import '../web_storage/web_storage.dart';
+import '_static_channel.dart';
+import 'headless_in_app_webview.dart';
 
 ///List of forbidden names for JavaScript handlers.
 // ignore: non_constant_identifier_names
@@ -1483,6 +1478,22 @@ class IOSInAppWebViewController extends PlatformInAppWebViewController
                 return (await _inAppBrowserEventHandler!
                         .onAjaxProgress(request))
                     ?.toNativeValue();
+            }
+            return null;
+          case "onAsyncAjaxRedirect":
+            if ((webviewParams != null &&
+                    webviewParams!.onAsyncAjaxRedirect != null) ||
+                _inAppBrowserEventHandler != null) {
+              Map<String, dynamic> arguments = args[0].cast<String, dynamic>();
+              AjaxRequest request = AjaxRequest.fromMap(arguments)!;
+
+              if (webviewParams != null &&
+                  webviewParams!.onAsyncAjaxRedirect != null)
+                return jsonEncode(await webviewParams!.onAsyncAjaxRedirect!(
+                    _controllerFromPlatform, request));
+              else
+                return jsonEncode(await _inAppBrowserEventHandler!
+                    .onAsyncAjaxRedirect(request));
             }
             return null;
           case "shouldInterceptFetchRequest":

@@ -1,15 +1,23 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview_internal_annotations/flutter_inappwebview_internal_annotations.dart';
-import 'dart:typed_data';
 
+import '../content_blocker.dart';
+import '../context_menu/context_menu.dart';
+import '../in_app_browser/in_app_browser_settings.dart';
+import '../in_app_browser/platform_in_app_browser.dart';
+import '../in_app_webview/platform_inappwebview_controller.dart';
 import '../platform_webview_asset_loader.dart';
+import '../platform_webview_feature.dart';
 import '../types/action_mode_menu_item.dart';
 import '../types/cache_mode.dart';
 import '../types/data_detector_types.dart';
 import '../types/force_dark.dart';
 import '../types/force_dark_strategy.dart';
 import '../types/layout_algorithm.dart';
+import '../types/main.dart';
 import '../types/mixed_content_mode.dart';
 import '../types/over_scroll_mode.dart';
 import '../types/referrer_policy.dart';
@@ -21,17 +29,10 @@ import '../types/scrollview_deceleration_rate.dart';
 import '../types/selection_granularity.dart';
 import '../types/user_preferred_content_mode.dart';
 import '../types/vertical_scrollbar_position.dart';
+import '../util.dart';
 import '../web_uri.dart';
 import 'android/in_app_webview_options.dart';
 import 'apple/in_app_webview_options.dart';
-import '../content_blocker.dart';
-import '../types/main.dart';
-import '../util.dart';
-import '../in_app_browser/in_app_browser_settings.dart';
-import '../platform_webview_feature.dart';
-import '../in_app_webview/platform_inappwebview_controller.dart';
-import '../context_menu/context_menu.dart';
-import '../in_app_browser/platform_in_app_browser.dart';
 import 'platform_webview.dart';
 
 part 'in_app_webview_settings.g.dart';
@@ -279,6 +280,11 @@ class InAppWebViewSettings_ {
   @SupportedPlatforms(
       platforms: [AndroidPlatform(), IOSPlatform(), MacOSPlatform()])
   bool? useShouldInterceptAjaxRequest;
+
+  /// Set to `true` if you want async ajax request use dart imps.
+  @SupportedPlatforms(
+      platforms: [AndroidPlatform(), IOSPlatform(), MacOSPlatform()])
+  bool? asyncAjaxRequestRedirectToHost;
 
   ///Set to `false` to be able to listen to also sync `XMLHttpRequest`s at the
   ///[PlatformWebViewCreationParams.shouldInterceptAjaxRequest] event.
@@ -1670,6 +1676,7 @@ as it can cause framerate drops on animations in Android 9 and lower (see [Hybri
     this.contentBlockers = const [],
     this.preferredContentMode = UserPreferredContentMode_.RECOMMENDED,
     this.useShouldInterceptAjaxRequest,
+    this.asyncAjaxRequestRedirectToHost,
     this.interceptOnlyAsyncAjaxRequests = true,
     this.useShouldInterceptFetchRequest,
     this.incognito = false,

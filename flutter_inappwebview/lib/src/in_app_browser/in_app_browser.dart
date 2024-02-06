@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview_platform_interface/flutter_inappwebview_platform_interface.dart';
 
 import '../find_interaction/find_interaction_controller.dart';
-import '../pull_to_refresh/main.dart';
-
 import '../in_app_webview/in_app_webview_controller.dart';
+import '../pull_to_refresh/main.dart';
 import '../webview_environment/webview_environment.dart';
 
 ///{@macro flutter_inappwebview_platform_interface.PlatformInAppBrowser}
@@ -284,6 +281,11 @@ class InAppBrowser implements PlatformInAppBrowserEvents {
 
   @override
   Future<AjaxRequestAction?>? onAjaxProgress(AjaxRequest ajaxRequest) {
+    return null;
+  }
+
+  @override
+  Future<AjaxRequest>? onAsyncAjaxRedirect(AjaxRequest ajaxRequest) {
     return null;
   }
 

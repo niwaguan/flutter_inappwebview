@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview_platform_interface/flutter_inappwebview_platform_interface.dart';
-import 'headless_in_app_webview.dart';
 
 import '../find_interaction/find_interaction_controller.dart';
-import 'in_app_webview_controller.dart';
-import '../pull_to_refresh/main.dart';
 import '../pull_to_refresh/pull_to_refresh_controller.dart';
+import 'headless_in_app_webview.dart';
+import 'in_app_webview_controller.dart';
 
 /// Object specifying creation parameters for creating a [PlatformInAppWebViewWidget].
 ///
@@ -54,6 +53,7 @@ class IOSInAppWebViewWidgetCreationParams
       super.shouldInterceptAjaxRequest,
       super.onAjaxReadyStateChange,
       super.onAjaxProgress,
+      super.onAsyncAjaxRedirect,
       super.shouldInterceptFetchRequest,
       super.onUpdateVisitedHistory,
       @Deprecated("Use onPrintRequest instead") super.onPrint,
@@ -176,6 +176,7 @@ class IOSInAppWebViewWidgetCreationParams
             shouldInterceptAjaxRequest: params.shouldInterceptAjaxRequest,
             onAjaxReadyStateChange: params.onAjaxReadyStateChange,
             onAjaxProgress: params.onAjaxProgress,
+            onAsyncAjaxRedirect: params.onAsyncAjaxRedirect,
             shouldInterceptFetchRequest: params.shouldInterceptFetchRequest,
             onUpdateVisitedHistory: params.onUpdateVisitedHistory,
             onPrint: params.onPrint,
