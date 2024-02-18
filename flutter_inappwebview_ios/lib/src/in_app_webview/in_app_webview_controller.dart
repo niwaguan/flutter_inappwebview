@@ -1427,6 +1427,14 @@ class IOSInAppWebViewController extends PlatformInAppWebViewController
                 _inAppBrowserEventHandler!.onLoadResource(response);
             }
             return null;
+          case "onRedirectAsyncAjaxRequest":
+            final redirector = webviewParams?.asyncAjaxRequestRedirector;
+            if (redirector != null) {
+              Map<String, dynamic> arguments = args[0].cast<String, dynamic>();
+              AjaxRequest request = AjaxRequest.fromMap(arguments)!;
+              return jsonEncode(await redirector.redirectRequest(request));
+            }
+            return null;
           case "shouldInterceptAjaxRequest":
             if ((webviewParams != null &&
                     webviewParams!.shouldInterceptAjaxRequest != null) ||
@@ -1478,22 +1486,6 @@ class IOSInAppWebViewController extends PlatformInAppWebViewController
                 return (await _inAppBrowserEventHandler!
                         .onAjaxProgress(request))
                     ?.toNativeValue();
-            }
-            return null;
-          case "onAsyncAjaxRedirect":
-            if ((webviewParams != null &&
-                    webviewParams!.onAsyncAjaxRedirect != null) ||
-                _inAppBrowserEventHandler != null) {
-              Map<String, dynamic> arguments = args[0].cast<String, dynamic>();
-              AjaxRequest request = AjaxRequest.fromMap(arguments)!;
-
-              if (webviewParams != null &&
-                  webviewParams!.onAsyncAjaxRedirect != null)
-                return jsonEncode(await webviewParams!.onAsyncAjaxRedirect!(
-                    _controllerFromPlatform, request));
-              else
-                return jsonEncode(await _inAppBrowserEventHandler!
-                    .onAsyncAjaxRedirect(request));
             }
             return null;
           case "shouldInterceptFetchRequest":

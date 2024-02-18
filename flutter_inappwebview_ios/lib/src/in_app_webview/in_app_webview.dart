@@ -53,7 +53,6 @@ class IOSInAppWebViewWidgetCreationParams
       super.shouldInterceptAjaxRequest,
       super.onAjaxReadyStateChange,
       super.onAjaxProgress,
-      super.onAsyncAjaxRedirect,
       super.shouldInterceptFetchRequest,
       super.onUpdateVisitedHistory,
       @Deprecated("Use onPrintRequest instead") super.onPrint,
@@ -131,7 +130,8 @@ class IOSInAppWebViewWidgetCreationParams
       super.contextMenu,
       super.initialUserScripts,
       this.pullToRefreshController,
-      this.findInteractionController});
+      this.findInteractionController,
+      super.asyncAjaxRequestRedirector});
 
   /// Constructs a [IOSInAppWebViewWidgetCreationParams] using a
   /// [PlatformInAppWebViewWidgetCreationParams].
@@ -176,7 +176,7 @@ class IOSInAppWebViewWidgetCreationParams
             shouldInterceptAjaxRequest: params.shouldInterceptAjaxRequest,
             onAjaxReadyStateChange: params.onAjaxReadyStateChange,
             onAjaxProgress: params.onAjaxProgress,
-            onAsyncAjaxRedirect: params.onAsyncAjaxRedirect,
+            asyncAjaxRequestRedirector: params.asyncAjaxRequestRedirector,
             shouldInterceptFetchRequest: params.shouldInterceptFetchRequest,
             onUpdateVisitedHistory: params.onUpdateVisitedHistory,
             onPrint: params.onPrint,
@@ -360,6 +360,10 @@ class IOSInAppWebViewWidget extends PlatformInAppWebViewWidget {
     if (params.shouldOverrideUrlLoading != null &&
         settings.useShouldOverrideUrlLoading == null) {
       settings.useShouldOverrideUrlLoading = true;
+    }
+    if (params.asyncAjaxRequestRedirector != null &&
+        settings.useAsyncAjaxRequestRedirector == null) {
+      settings.useAsyncAjaxRequestRedirector = true;
     }
     if (params.onLoadResource != null && settings.useOnLoadResource == null) {
       settings.useOnLoadResource = true;

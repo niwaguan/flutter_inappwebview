@@ -94,9 +94,6 @@ class InAppWebView extends StatefulWidget {
     Future<AjaxRequestAction> Function(
             InAppWebViewController controller, AjaxRequest ajaxRequest)?
         onAjaxProgress,
-    Future<AjaxRequest> Function(
-            InAppWebViewController controller, AjaxRequest ajaxRequest)?
-        onAsyncAjaxRedirect,
     Future<AjaxRequestAction?> Function(
             InAppWebViewController controller, AjaxRequest ajaxRequest)?
         onAjaxReadyStateChange,
@@ -186,6 +183,7 @@ class InAppWebView extends StatefulWidget {
     Future<AjaxRequest?> Function(
             InAppWebViewController controller, AjaxRequest ajaxRequest)?
         shouldInterceptAjaxRequest,
+    AsyncAjaxRequestRedirector? asyncAjaxRequestRedirector,
     Future<FetchRequest?> Function(
             InAppWebViewController controller, FetchRequest fetchRequest)?
         shouldInterceptFetchRequest,
@@ -304,6 +302,7 @@ class InAppWebView extends StatefulWidget {
                       InAppWebViewController.fromPlatform(platform: controller),
               windowId: windowId,
               keepAlive: keepAlive,
+              asyncAjaxRequestRedirector: asyncAjaxRequestRedirector,
               initialUrlRequest: initialUrlRequest,
               initialFile: initialFile,
               initialData: initialData,
@@ -426,10 +425,6 @@ class InAppWebView extends StatefulWidget {
               onAjaxProgress: onAjaxProgress != null
                   ? (controller, ajaxRequest) =>
                       onAjaxProgress.call(controller, ajaxRequest)
-                  : null,
-              onAsyncAjaxRedirect: onAsyncAjaxRedirect != null
-                  ? (controller, ajaxRequest) =>
-                      onAsyncAjaxRedirect.call(controller, ajaxRequest)
                   : null,
               shouldInterceptFetchRequest: shouldInterceptFetchRequest != null
                   ? (controller, fetchRequest) =>

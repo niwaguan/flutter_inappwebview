@@ -465,9 +465,6 @@ class PlatformWebViewCreationParams<T> {
   final Future<AjaxRequestAction?> Function(
       T controller, AjaxRequest ajaxRequest)? onAjaxProgress;
 
-  final Future<AjaxRequest?> Function(T controller, AjaxRequest ajaxRequest)?
-      onAsyncAjaxRedirect;
-
   ///{@template flutter_inappwebview_platform_interface.PlatformWebViewCreationParams.shouldInterceptFetchRequest}
   ///Event fired when a request is sent to a server through [Fetch API](https://developer.mozilla.org/it/docs/Web/API/Fetch_API).
   ///It gives the host application a chance to take control over the request before sending it.
@@ -1150,6 +1147,8 @@ class PlatformWebViewCreationParams<T> {
   ///{@endtemplate}
   final PlatformFindInteractionController? findInteractionController;
 
+  final AsyncAjaxRequestRedirector? asyncAjaxRequestRedirector;
+
   ///{@macro flutter_inappwebview_platform_interface.PlatformWebViewCreationParams}
   const PlatformWebViewCreationParams(
       {this.controllerFromPlatform,
@@ -1184,7 +1183,6 @@ class PlatformWebViewCreationParams<T> {
       this.shouldInterceptAjaxRequest,
       this.onAjaxReadyStateChange,
       this.onAjaxProgress,
-      this.onAsyncAjaxRedirect,
       this.shouldInterceptFetchRequest,
       this.onUpdateVisitedHistory,
       @Deprecated("Use onPrintRequest instead") this.onPrint,
@@ -1262,5 +1260,6 @@ class PlatformWebViewCreationParams<T> {
       this.contextMenu,
       this.initialUserScripts,
       this.pullToRefreshController,
-      this.findInteractionController});
+      this.findInteractionController,
+      this.asyncAjaxRequestRedirector});
 }

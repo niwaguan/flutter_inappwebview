@@ -1,16 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_inappwebview_platform_interface/flutter_inappwebview_platform_interface.dart';
-import 'headless_in_app_webview.dart';
 
 import '../find_interaction/find_interaction_controller.dart';
-import 'in_app_webview_controller.dart';
-import '../pull_to_refresh/main.dart';
 import '../pull_to_refresh/pull_to_refresh_controller.dart';
+import 'headless_in_app_webview.dart';
+import 'in_app_webview_controller.dart';
 
 /// Object specifying creation parameters for creating a [PlatformInAppWebViewWidget].
 ///
@@ -134,7 +133,8 @@ class AndroidInAppWebViewWidgetCreationParams
       super.contextMenu,
       super.initialUserScripts,
       this.pullToRefreshController,
-      this.findInteractionController});
+      this.findInteractionController,
+      super.asyncAjaxRequestRedirector});
 
   /// Constructs a [AndroidInAppWebViewWidgetCreationParams] using a
   /// [PlatformInAppWebViewWidgetCreationParams].
@@ -177,6 +177,7 @@ class AndroidInAppWebViewWidgetCreationParams
             onReceivedClientCertRequest: params.onReceivedClientCertRequest,
             onFindResultReceived: params.onFindResultReceived,
             shouldInterceptAjaxRequest: params.shouldInterceptAjaxRequest,
+            asyncAjaxRequestRedirector: params.asyncAjaxRequestRedirector,
             onAjaxReadyStateChange: params.onAjaxReadyStateChange,
             onAjaxProgress: params.onAjaxProgress,
             shouldInterceptFetchRequest: params.shouldInterceptFetchRequest,
@@ -418,6 +419,10 @@ class AndroidInAppWebViewWidget extends PlatformInAppWebViewWidget {
     if (params.shouldOverrideUrlLoading != null &&
         settings.useShouldOverrideUrlLoading == null) {
       settings.useShouldOverrideUrlLoading = true;
+    }
+    if (params.asyncAjaxRequestRedirector != null &&
+        settings.useAsyncAjaxRequestRedirector == null) {
+      settings.useAsyncAjaxRequestRedirector = true;
     }
     if (params.onLoadResource != null && settings.useOnLoadResource == null) {
       settings.useOnLoadResource = true;

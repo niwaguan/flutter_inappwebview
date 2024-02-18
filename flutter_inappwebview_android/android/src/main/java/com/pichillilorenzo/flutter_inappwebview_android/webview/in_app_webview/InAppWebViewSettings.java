@@ -49,6 +49,7 @@ public class InAppWebViewSettings implements ISettings<InAppWebViewInterface> {
   public Integer preferredContentMode = PreferredContentModeOptionType.RECOMMENDED.toValue();
   public Boolean useShouldInterceptAjaxRequest = false;
   public Boolean interceptOnlyAsyncAjaxRequests = true;
+  public Boolean useAsyncAjaxRequestRedirector = false;
   public Boolean useShouldInterceptFetchRequest = false;
   public Boolean incognito = false;
   public Boolean cacheEnabled = true;
@@ -195,6 +196,9 @@ public class InAppWebViewSettings implements ISettings<InAppWebViewInterface> {
           break;
         case "interceptOnlyAsyncAjaxRequests":
           interceptOnlyAsyncAjaxRequests = (Boolean) value;
+          break;
+        case "useAsyncAjaxRequestRedirector":
+          useAsyncAjaxRequestRedirector = (Boolean) value;
           break;
         case "useShouldInterceptFetchRequest":
           useShouldInterceptFetchRequest = (Boolean) value;
@@ -438,6 +442,7 @@ public class InAppWebViewSettings implements ISettings<InAppWebViewInterface> {
     settings.put("contentBlockers", contentBlockers);
     settings.put("preferredContentMode", preferredContentMode);
     settings.put("useShouldInterceptAjaxRequest", useShouldInterceptAjaxRequest);
+    settings.put("useAsyncAjaxRequestRedirector", useAsyncAjaxRequestRedirector);
     settings.put("interceptOnlyAsyncAjaxRequests", interceptOnlyAsyncAjaxRequests);
     settings.put("useShouldInterceptFetchRequest", useShouldInterceptFetchRequest);
     settings.put("incognito", incognito);

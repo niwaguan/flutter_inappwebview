@@ -81,6 +81,7 @@ import com.pichillilorenzo.flutter_inappwebview_android.plugin_scripts_js.OnWind
 import com.pichillilorenzo.flutter_inappwebview_android.plugin_scripts_js.PluginScriptsUtil;
 import com.pichillilorenzo.flutter_inappwebview_android.plugin_scripts_js.PrintJS;
 import com.pichillilorenzo.flutter_inappwebview_android.plugin_scripts_js.PromisePolyfillJS;
+import com.pichillilorenzo.flutter_inappwebview_android.plugin_scripts_js.RedirectAsyncAjaxRequestJS;
 import com.pichillilorenzo.flutter_inappwebview_android.print_job.PrintJobController;
 import com.pichillilorenzo.flutter_inappwebview_android.print_job.PrintJobSettings;
 import com.pichillilorenzo.flutter_inappwebview_android.pull_to_refresh.PullToRefreshLayout;
@@ -176,6 +177,9 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
 
   @Nullable
   private PluginScript interceptOnlyAsyncAjaxRequestsPluginScript;
+
+  @Nullable
+  private PluginScript redirectAsyncAjaxRequestsPluginScript;
 
   public InAppWebView(Context context) {
     super(context);
@@ -570,6 +574,10 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
     userContentController.addPluginScript(PrintJS.PRINT_JS_PLUGIN_SCRIPT);
     userContentController.addPluginScript(OnWindowBlurEventJS.ON_WINDOW_BLUR_EVENT_JS_PLUGIN_SCRIPT);
     userContentController.addPluginScript(OnWindowFocusEventJS.ON_WINDOW_FOCUS_EVENT_JS_PLUGIN_SCRIPT);
+    if (customSettings.useAsyncAjaxRequestRedirector) {
+      redirectAsyncAjaxRequestsPluginScript = RedirectAsyncAjaxRequestJS.REDIRECT_ASYNC_AJAX_REQUEST_JS_PLUGIN_SCRIPT;
+      userContentController.addPluginScript(redirectAsyncAjaxRequestsPluginScript);
+    }
     interceptOnlyAsyncAjaxRequestsPluginScript = InterceptAjaxRequestJS.createInterceptOnlyAsyncAjaxRequestsPluginScript(customSettings.interceptOnlyAsyncAjaxRequests);
     if (customSettings.useShouldInterceptAjaxRequest) {
       userContentController.addPluginScript(interceptOnlyAsyncAjaxRequestsPluginScript);
@@ -2056,6 +2064,7 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
       }
     });
     interceptOnlyAsyncAjaxRequestsPluginScript = null;
+    redirectAsyncAjaxRequestsPluginScript = null;
     userContentController.dispose();
     if (findInteractionController != null) {
       findInteractionController.dispose();

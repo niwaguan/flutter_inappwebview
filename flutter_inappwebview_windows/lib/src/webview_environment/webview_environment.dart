@@ -64,6 +64,7 @@ class WindowsWebViewEnvironment extends PlatformWebViewEnvironment
       default:
         throw UnimplementedError("Unimplemented ${call.method} method");
     }
+    return null;
   }
 
   @override

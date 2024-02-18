@@ -281,11 +281,6 @@ class InAppWebViewSettings_ {
       platforms: [AndroidPlatform(), IOSPlatform(), MacOSPlatform()])
   bool? useShouldInterceptAjaxRequest;
 
-  /// Set to `true` if you want async ajax request use dart imps.
-  @SupportedPlatforms(
-      platforms: [AndroidPlatform(), IOSPlatform(), MacOSPlatform()])
-  bool? asyncAjaxRequestRedirectToHost;
-
   ///Set to `false` to be able to listen to also sync `XMLHttpRequest`s at the
   ///[PlatformWebViewCreationParams.shouldInterceptAjaxRequest] event.
   ///
@@ -304,6 +299,10 @@ class InAppWebViewSettings_ {
   @SupportedPlatforms(
       platforms: [AndroidPlatform(), IOSPlatform(), MacOSPlatform()])
   bool? useShouldInterceptFetchRequest;
+
+  @SupportedPlatforms(
+      platforms: [AndroidPlatform(), IOSPlatform(), MacOSPlatform()])
+  bool? useAsyncAjaxRequestRedirector;
 
   ///Set to `true` to open a browser window with incognito mode. The default value is `false`.
   @SupportedPlatforms(platforms: [
@@ -1676,9 +1675,9 @@ as it can cause framerate drops on animations in Android 9 and lower (see [Hybri
     this.contentBlockers = const [],
     this.preferredContentMode = UserPreferredContentMode_.RECOMMENDED,
     this.useShouldInterceptAjaxRequest,
-    this.asyncAjaxRequestRedirectToHost,
     this.interceptOnlyAsyncAjaxRequests = true,
     this.useShouldInterceptFetchRequest,
+    this.useAsyncAjaxRequestRedirector,
     this.incognito = false,
     this.cacheEnabled = true,
     this.transparentBackground = false,

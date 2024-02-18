@@ -11,6 +11,7 @@ import WebKit
 @objcMembers
 public class InAppWebViewSettings: ISettings<InAppWebView> {
     
+    var useAsyncAjaxRequestRedirector = false
     var useShouldOverrideUrlLoading = false
     var useOnLoadResource = false
     var useOnDownloadStart = false
@@ -28,7 +29,6 @@ public class InAppWebViewSettings: ISettings<InAppWebView> {
     var minimumFontSize = 0
     var useShouldInterceptAjaxRequest = false
     var interceptOnlyAsyncAjaxRequests = true
-    var asyncAjaxRequestRedirectToHost = false
     var useShouldInterceptFetchRequest = false
     var incognito = false
     var cacheEnabled = true

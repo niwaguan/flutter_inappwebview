@@ -58,7 +58,6 @@ class PlatformInAppWebViewWidgetCreationParams
       super.shouldInterceptAjaxRequest,
       super.onAjaxReadyStateChange,
       super.onAjaxProgress,
-      super.onAsyncAjaxRedirect,
       super.shouldInterceptFetchRequest,
       super.onUpdateVisitedHistory,
       @Deprecated("Use onPrintRequest instead") super.onPrint,
@@ -136,7 +135,8 @@ class PlatformInAppWebViewWidgetCreationParams
       super.contextMenu,
       super.initialUserScripts,
       super.pullToRefreshController,
-      super.findInteractionController});
+      super.findInteractionController,
+      super.asyncAjaxRequestRedirector});
 
   /// Controls how one widget replaces another widget in the tree.
   ///
